@@ -13,17 +13,17 @@
 using namespace std;
 
 int main() {
-   std::ifstream stream("./initial_n1000.dat");
+   std::ifstream stream("./initial_n10000.dat");
    string line;
 
    int row = 0;
    int col;
    int n;
    int i = 0;
-   double data[1000][9];
+   double data[10000][9];
    const string delim = " ";
 
-   double L;
+   double E, L;
    double r_close;
    double r_min = 0.001;
 
@@ -41,10 +41,11 @@ int main() {
    std::cin >> n;
 
    while( i < n ){
-      L = data[i][1] * sqrt(pow(data[i][3]*data[i][7] - data[i][4]*data[i][6] ,2.0) + pow(data[i][4]*data[i][5] - data[i][2]*data[i][7] ,2.0) + pow(data[i][2]*data[i][6] - data[i][3]*data[i][5] ,2.0));
-      r_close = L*L / 2.0;
+      E = (data[i][5]*data[i][5]+data[i][6]*data[i][6]+data[i][7]*data[i][7])/2.0 - 1.0/sqrt(data[i][2]*data[i][2]+data[i][3]*data[i][3]+data[i][4]*data[i][4]);
+      L = sqrt(pow(data[i][3]*data[i][7] - data[i][4]*data[i][6] ,2.0) + pow(data[i][4]*data[i][5] - data[i][2]*data[i][7] ,2.0) + pow(data[i][2]*data[i][6] - data[i][3]*data[i][5] ,2.0));   // L = r × mv
+      r_close = L*L / (1.0 + sqrt(1.0+2.0*E*L*L));
 
-      if( r_close > r_min ){
+      if( r_close > r_min ){   //吸収される粒子以外を出力する
          std::cout << std::setprecision(15);
          std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " " << data[i][4] << " " << data[i][5] << " " << data[i][6] << " " << data[i][7] << " " << data[i][8] << std::endl;
       }
